@@ -26,7 +26,7 @@ const HeroBanner = () => {
             <img 
               src="/images/features.png" 
               alt="Features" 
-              className="w-full h-32 sm:h-36 md:h-48 lg:h-56 object-cover object-center "
+              className="w-full h-32 sm:h-36 md:h-48 lg:h-56 object-cover object-center"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = 'https://via.placeholder.com/1200x200?text=Aerie+Academy+Features';
@@ -34,6 +34,13 @@ const HeroBanner = () => {
             />
           </div>
         </div>
+      </div>
+      
+      {/* Centered button with top margin */}
+      <div className="flex justify-center mt-12 md:mt-16">
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-300">
+          Book a Free Expert Counselling Session
+        </button>
       </div>
     </section>
   );
