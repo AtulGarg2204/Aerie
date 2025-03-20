@@ -5,87 +5,42 @@ const Teachers = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleTeachers = 4; // Number of teachers visible at once
   
-  // Teacher data - update image paths when you upload the images
+  // Teacher data with updated image paths
   const teachers = [
     {
       id: 1,
-      name: 'Shobhit Srivastava',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Reinforcement Learning',
-      experience: 10
+      image: '/1.png',
+
     },
     {
       id: 2,
-      name: 'Krishna Yadav',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Structures',
-      experience: 11
+
+      image: '/2.png',
+
     },
     {
       id: 3,
-      name: 'Ankit Sharma',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Surveying',
-      experience: 12
+
+      image: '/3.png',
+
     },
     {
       id: 4,
-      name: 'Ankit',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'CPM',
-      experience: 12
+
+      image: '/4.png',
+
     },
     {
       id: 5,
-      name: 'Rahul Kumar',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Machine Learning',
-      experience: 8
+
+      image: '/5.png',
+
     },
     {
       id: 6,
-      name: 'Deepak Joshi',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Data Structures',
-      experience: 9
-    },
-    {
-      id: 7,
-      name: 'Priya Sharma',
-      title: 'Ma\'am',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Algorithms',
-      experience: 7
-    },
-    {
-      id: 8,
-      name: 'Amit Verma',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'System Design',
-      experience: 14
-    },
-    {
-      id: 9,
-      name: 'Neha Gupta',
-      title: 'Ma\'am',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'AI Foundations',
-      experience: 6
-    },
-    {
-      id: 10,
-      name: 'Vikram Singh',
-      title: 'Sir',
-      image: '/images/12.png', // Update with actual path when available
-      subject: 'Database Management',
-      experience: 15
+
+      image: '/6.png',
+
     }
   ];
 
@@ -132,29 +87,20 @@ const Teachers = () => {
                   className="w-full px-2 flex-shrink-0 flex-grow-0"
                   style={{ width: `${100 / visibleTeachers}%` }}
                 >
-                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                    <div className="aspect-w-1 aspect-h-1 relative">
-                      {/* Placeholder for teacher image - replace with actual image */}
-                      <div className="bg-gray-200 w-full h-52 flex items-center justify-center">
-                        {teacher.image ? (
-                          <img 
-                            src={teacher.image} 
-                            alt={`${teacher.name}`}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="text-gray-400">Image coming soon</div>
-                        )}
-                      </div>
+                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow text-center">
+                    {/* Square aspect ratio container for image */}
+                    <div className="relative aspect-square overflow-hidden">
+                      <img 
+                        src={teacher.image} 
+                        alt={`${teacher.name}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${teacher.name.replace(' ', '+')}&background=E3E3E3&color=333&size=256`;
+                        }}
+                      />
                     </div>
-                    <div className="p-4 text-center">
-                      <h3 className="font-semibold text-lg text-gray-900">{teacher.name}</h3>
-                      <p className="text-gray-600 mb-2">{teacher.title}</p>
-                      <div className="bg-indigo-50 rounded-full py-1 px-4 inline-block mb-2">
-                        <span className="text-indigo-600 text-sm">{teacher.subject}</span>
-                      </div>
-                      <p className="text-gray-500 text-sm">Exp: {teacher.experience} years</p>
-                    </div>
+                
                   </div>
                 </div>
               ))}

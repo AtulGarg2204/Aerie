@@ -26,29 +26,25 @@ const YouTube = () => {
   };
 
   useEffect(() => {
-    const fetchYouTubeVideos = async () => {
+    const fetchUnlistedYouTubeVideos = async () => {
       try {
         setLoading(true);
-       
-        // Replace with Aerie Academy channel ID when available
-        const channelId = 'UCNXLr-gjvCx0lZWA70WjvkA'; 
+        
+        // Instead of fetching from the YouTube API, we'll use a predefined list of unlisted videos
+        // since the YouTube API doesn't allow fetching unlisted videos directly
+        
+        // Your specified unlisted videos
+        const unlistedVideoIds = [
+          '0L3lEfc6dWg',  // First video
+          'Beg-Qm0Ndw8',  // Second video
+          'zRpbLd9WRXs'   // Third video
+        ];
+        
         const apiKey = 'AIzaSyBru7sMdJd83ew0BUnYftBEfKWsEz7qxIU'; // Your provided API key
-        const maxResults = 10;
         
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${maxResults}&type=video`
-        );
-        
-        if (!response.ok) {
-          throw new Error(`YouTube API error: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        // Get video details for additional information
-        const videoIds = data.items.map(item => item.id.videoId).join(',');
+        // Fetch video details for the unlisted videos
         const videosResponse = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=snippet,contentDetails,statistics`
+          `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${unlistedVideoIds.join(',')}&part=snippet,contentDetails,statistics`
         );
         
         if (!videosResponse.ok) {
@@ -58,12 +54,11 @@ const YouTube = () => {
         const videosData = await videosResponse.json();
         
         // Transform the YouTube API response to match our video format
-        const fetchedVideos = data.items.map(item => {
-          const videoDetails = videosData.items.find(v => v.id === item.id.videoId);
+        const fetchedVideos = videosData.items.map(item => {
           const publishDate = new Date(item.snippet.publishedAt);
           
           return {
-            id: item.id.videoId,
+            id: item.id,
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails.medium.url,
             date: publishDate.toLocaleDateString('en-US', {
@@ -75,10 +70,10 @@ const YouTube = () => {
               hour: '2-digit',
               minute: '2-digit'
             }),
-            category: 'Education', // Changed from "Music Video" to "Education"
+            category: 'Education',
             channelLogo: '/aerie.png', // Using Aerie Academy logo
-            views: videoDetails ? parseInt(videoDetails.statistics.viewCount).toLocaleString() : '0',
-            duration: videoDetails ? formatDuration(videoDetails.contentDetails.duration) : '00:00'
+            views: parseInt(item.statistics.viewCount).toLocaleString(),
+            duration: formatDuration(item.contentDetails.duration)
           };
         });
         
@@ -91,7 +86,7 @@ const YouTube = () => {
       }
     };
     
-    fetchYouTubeVideos();
+    fetchUnlistedYouTubeVideos();
   }, []);
   
   // Helper function to format YouTube duration (PT1H2M3S format to HH:MM:SS)
@@ -104,12 +99,12 @@ const YouTube = () => {
     
     return `${hours}${minutes}:${seconds}`;
   };
-
+  
   return (
     <section className="py-16 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">GATE Preparation Videos</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Demo Videos</h2>
           <a 
             href="https://www.youtube.com/channel/UCNXLr-gjvCx0lZWA70WjvkA"
             target="_blank"
@@ -129,7 +124,7 @@ const YouTube = () => {
         ) : error ? (
           <div className="text-center py-10 text-red-500">{error}</div>
         ) : (
-          <div className="relative">
+          <div className="relative w-full">
             {/* Left Navigation Arrow */}
             <button 
               className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 transition-colors ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -142,13 +137,13 @@ const YouTube = () => {
             {/* Video Carousel */}
             <div className="overflow-hidden">
               <div 
-                className="flex transition-transform duration-300 ease-in-out"
+                className="flex gap-4 transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * (100 / visibleVideos)}%)` }}
               >
                 {videos.map((video) => (
                   <div
                     key={video.id}
-                    className="w-full max-w-sm px-2 flex-shrink-0 flex-grow-0"
+                    className="w-full px-2 flex-shrink-0 flex-grow-0"
                     style={{ width: `${100 / visibleVideos}%` }}
                   >
                     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
@@ -156,7 +151,11 @@ const YouTube = () => {
                         <img 
                           src={video.thumbnail} 
                           alt={video.title}
-                          className="w-full h-48 object-cover" 
+                          className="w-full h-64 object-cover" 
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://via.placeholder.com/320x180?text=Video+Thumbnail';
+                          }}
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                           <button
@@ -208,6 +207,16 @@ const YouTube = () => {
             </button>
           </div>
         )}
+        
+        {/* Added CTA Button */}
+        <div className="flex justify-center mt-12">
+          <button 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg"
+            onClick={() => window.location.href = '/contact'}
+          >
+            Book a Free Expert Counselling Session
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -58,7 +58,7 @@ const CallToAction = () => {
           className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
         >
           <Phone className="w-5 h-5" />
-          Book a Call
+          Contact Us
           <ArrowRight className="w-5 h-5 ml-1" />
         </button>
       </div>

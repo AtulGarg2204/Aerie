@@ -7,9 +7,9 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
-    { name: 'Courses', href: '#courses' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Success Stories', href: '#success-stories' }
+    { name: 'Courses', href: '#courses', targetId: 'find-course' },
+    { name: 'Success Stories', href: '#success-stories', targetId: 'success-stories' },
+    { name: 'FAQ', href: '#faq', targetId: 'faq' }
   ];
 
   const openModal = () => setIsModalOpen(true);
@@ -31,6 +31,21 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Scroll to section handler
+  const scrollToSection = (e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      // Close mobile menu if open
+      if (isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+      
+      // Smooth scroll to the element
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <nav className={`bg-white shadow-sm sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
@@ -58,6 +73,7 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => scrollToSection(e, item.targetId)}
                   className="text-gray-700 hover:text-primary relative px-3 py-2 rounded-md text-[17px] font-medium transition-colors duration-200 group"
                 >
                   {item.name}
@@ -73,7 +89,7 @@ const Navbar = () => {
               onClick={openModal}
               className="ml-4 inline-flex items-center justify-center px-8 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
             >
-              Enquire Now
+              Book a Call
             </button>
           </div>
 
@@ -131,6 +147,7 @@ const Navbar = () => {
             <a
               key={item.name}
               href={item.href}
+              onClick={(e) => scrollToSection(e, item.targetId)}
               className="text-gray-700 hover:text-primary block px-3 py-3 rounded-md text-base font-medium transition-colors duration-200"
             >
               {item.name}

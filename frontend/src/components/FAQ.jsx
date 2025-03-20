@@ -102,7 +102,7 @@ const FAQ = () => {
             className="inline-flex items-center bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors"
           >
             <Phone className="w-5 h-5 mr-2" />
-            Contact Us
+            Book a Call
           </button>
         </div>
       </div>

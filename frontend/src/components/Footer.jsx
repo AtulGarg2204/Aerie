@@ -47,11 +47,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><a href="/about" className="text-gray-600 hover:text-indigo-600 transition-colors">About Us</a></li>
               <li><a href="/courses" className="text-gray-600 hover:text-indigo-600 transition-colors">Our Courses</a></li>
-              <li><a href="/testimonials" className="text-gray-600 hover:text-indigo-600 transition-colors">Success Stories</a></li>
-              <li><a href="/blog" className="text-gray-600 hover:text-indigo-600 transition-colors">Blog</a></li>
-              <li><a href="/careers" className="text-gray-600 hover:text-indigo-600 transition-colors">Careers</a></li>
-              <li><a href="/privacy-policy" className="text-gray-600 hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="text-gray-600 hover:text-indigo-600 transition-colors">Terms & Conditions</a></li>
+              <li><a href="/terms" className="text-gray-600 hover:text-indigo-600 transition-colors">FAQ</a></li>
             </ul>
           </div>
 
@@ -59,12 +55,6 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-6 text-gray-900">Our Courses</h4>
             <ul className="space-y-3">
-              <li><a href="/courses/gate-architecture" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Architecture</a></li>
-              <li><a href="/courses/gate-planning" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Planning</a></li>
-              <li><a href="/courses/gate-civil" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Civil Engineering</a></li>
-              <li><a href="/courses/gate-mechanical" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Mechanical</a></li>
-              <li><a href="/courses/gate-electrical" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Electrical</a></li>
-              <li><a href="/courses/gate-computer-science" className="text-gray-600 hover:text-indigo-600 transition-colors">GATE Computer Science</a></li>
               <li><a href="/courses/all" className="text-gray-600 hover:text-indigo-600 transition-colors">View All Courses</a></li>
             </ul>
           </div>
