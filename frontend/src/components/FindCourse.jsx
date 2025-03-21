@@ -8,7 +8,7 @@ const FindCourse = () => {
     const closeModal = () => setIsModalOpen(false);
     console.log(closeModal,isModalOpen);
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-10 relative px-6">
+    <section className=" flex items-center justify-center bg-gray-10 relative px-6 py-20">
       <div className="max-w-[1280px] w-full mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 lg:gap-24">
           {/* Left content */}

@@ -145,7 +145,7 @@ const SuccessStories = () => {
         </div>
 
         {/* Testimonials Section */}
-        <div className="mb-12">
+        <div className="mb-12 mt-28">
         <div className="flex justify-center items-center mb-10">
     <h2 className="text-3xl font-bold text-gray-900 px-4">Hear from our Students</h2>
            

@@ -9,7 +9,7 @@ const CallToAction = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <section className="py-20 px-6 bg-white text-gray-800">
+    <section className="pt-[4rem] pb-[5rem] px-6 bg-white text-gray-800">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-indigo-800">
           Embark on Your GATE Success Journey with Aerie
