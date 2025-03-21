@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Phone } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const FAQ = () => {
   // State to track which FAQ item is open
@@ -54,11 +54,7 @@ const FAQ = () => {
     setOpenItem(openItem === index ? null : index);
   };
 
-  // Handle contact us click
-  const handleContactClick = () => {
-    // Replace with your contact link or modal
-    window.location.href = "/contact";
-  };
+
 
   return (
     <section className="py-16 px-6 bg-gray-50">
@@ -94,16 +90,6 @@ const FAQ = () => {
               )}
             </div>
           ))}
-        </div>
-
-        <div className="text-center">
-          <button
-            onClick={handleContactClick}
-            className="inline-flex items-center bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors"
-          >
-            <Phone className="w-5 h-5 mr-2" />
-            Book a Call
-          </button>
         </div>
       </div>
     </section>

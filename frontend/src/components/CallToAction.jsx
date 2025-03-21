@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone, Calendar, ArrowRight } from 'lucide-react';
-
+import CallToActionModal from './CallToActionModal'
 const CallToAction = () => {
-  // Function to handle the Book a Call button click
-  const handleBookCall = () => {
-    // Replace with your booking link or modal
-    window.location.href = "/book-call";
-  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <section className="py-20 px-6 bg-white text-gray-800">
@@ -54,13 +54,16 @@ const CallToAction = () => {
         </div>
         
         <button
-          onClick={handleBookCall}
-          className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
-        >
-          <Phone className="w-5 h-5" />
-          Contact Us
-          <ArrowRight className="w-5 h-5 ml-1" />
-        </button>
+        onClick={openModal}
+        className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
+      >
+        <Phone className="w-5 h-5" />
+        Book a Free Expert Counselling Session
+        <ArrowRight className="w-5 h-5 ml-1" />
+      </button>
+
+      {/* Call to Action Modal */}
+      <CallToActionModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );

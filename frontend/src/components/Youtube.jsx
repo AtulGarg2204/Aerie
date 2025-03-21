@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Play, ChevronLeft, ChevronRight, ExternalLink, Loader } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight, ExternalLink,Phone,ArrowRight, Loader } from 'lucide-react';
+import YoutubeModal from './YoutubeModal';
 
 const YouTube = () => {
   const [videos, setVideos] = useState([]);
@@ -7,6 +8,10 @@ const YouTube = () => {
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleVideos = 3; // Number of videos visible at once
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const nextSlide = () => {
     if (currentIndex < videos.length - visibleVideos) {
@@ -210,13 +215,16 @@ const YouTube = () => {
         
         {/* Added CTA Button */}
         <div className="flex justify-center mt-12">
-          <button 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg"
-            onClick={() => window.location.href = '/contact'}
-          >
-            Book a Free Expert Counselling Session
-          </button>
+        <button
+        onClick={openModal}
+        className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
+      >
+        <Phone className="w-5 h-5" />
+        Book a Free Expert Counselling Session
+        <ArrowRight className="w-5 h-5 ml-1" />
+      </button>
         </div>
+        <YoutubeModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );

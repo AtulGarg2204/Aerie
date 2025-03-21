@@ -73,8 +73,8 @@ const Testimonials = () => {
     <section className="py-16 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-900">Testimonials: {testimonials.length}</h2>
-          <h3 className="text-lg text-gray-700">What subscribers are achieving through learning</h3>
+          <h2 className="text-3xl font-bold text-gray-900">Hear from our students</h2>
+          
         </div>
 
         <div className="relative">

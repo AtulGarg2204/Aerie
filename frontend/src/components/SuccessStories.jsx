@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-
+import { ArrowRight, ChevronLeft, ChevronRight ,Phone} from 'lucide-react';
+import AchieversModal from './AchieversModal';
 const SuccessStories = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
   // Banner state and data
   const [currentBanner, setCurrentBanner] = useState(0);
   const banners = [
@@ -82,11 +86,7 @@ const SuccessStories = () => {
     return () => clearInterval(bannerInterval);
   }, [banners.length]);
 
-  // Handle CTA button click
-  const handleJoinCommunity = () => {
-    window.location.href = 'https://your-community-link.com'; // Replace with your actual URL
-  };
-
+  
   const nextSlide = () => {
     if (currentIndex < testimonials.length - testimonialsPerView) {
       setCurrentIndex(currentIndex + 1);
@@ -146,9 +146,9 @@ const SuccessStories = () => {
 
         {/* Testimonials Section */}
         <div className="mb-12">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl font-bold text-gray-900">Testimonials: {testimonials.length}</h2>
-            <h3 className="text-lg text-gray-700">What subscribers are achieving through learning</h3>
+        <div className="flex justify-center items-center mb-10">
+    <h2 className="text-3xl font-bold text-gray-900 px-4">Hear from our Students</h2>
+           
           </div>
 
           <div className="relative">
@@ -226,14 +226,19 @@ const SuccessStories = () => {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-8">
-          <button 
-            onClick={handleJoinCommunity}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-md flex items-center gap-2 transition-colors"
-          >
-            Book a Call
-            <ArrowRight className="w-5 h-5" />
-          </button>
+        <button
+        onClick={openModal}
+        className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
+      >
+        <Phone className="w-5 h-5" />
+        Book a Free Expert Counselling Session
+        <ArrowRight className="w-5 h-5 ml-1" />
+      </button>
+
+      {/* Call to Action Modal */}
+      
         </div>
+        <AchieversModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );
