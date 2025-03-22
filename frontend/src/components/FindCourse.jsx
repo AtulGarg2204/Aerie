@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import { ArrowRight} from 'lucide-react';
+import CourseModal from './CourseModal';
 
 const FindCourse = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,6 +67,7 @@ const FindCourse = () => {
           </div>
         </div>
       </div>
+      <CourseModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
 };
