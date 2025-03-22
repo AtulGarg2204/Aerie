@@ -84,19 +84,13 @@ const CourseFeatures = () => {
                 </div>
               </div>
               
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 relative">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
                 {feature.title}
-                {hoveredIndex === index && (
-                  <span className="absolute -left-2 top-1/2 w-1 h-6 bg-blue-500 transform -translate-y-1/2 transition-all duration-300"></span>
-                )}
               </h3>
               
               <p className={`text-gray-600 leading-relaxed transition-opacity duration-300 ${hoveredIndex === index ? 'opacity-100' : 'opacity-80'}`}>
                 {feature.description}
               </p>
-              
-              {/* Reveal line on hover */}
-              <div className={`w-0 h-0.5 bg-gray-200 mt-4 transition-all duration-500 ${hoveredIndex === index ? 'w-full' : ''}`}></div>
             </div>
           ))}
         </div>
