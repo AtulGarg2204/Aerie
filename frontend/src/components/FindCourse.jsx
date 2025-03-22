@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
-import { ArrowRight} from 'lucide-react';
-import CourseModal from './CourseModal';
+
+import EnquiryModal from './EnquiryModal';
 
 const FindCourse = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,14 +23,10 @@ const FindCourse = () => {
 
             </p>
             <div className="flex items-center gap-8">
-              <button onClick={openModal} className="bg-black text-white px-8 py-3.5 rounded-lg hover:bg-gray-800 transition-colors font-medium">
+              <button onClick={openModal} className="bg-[#180676] text-white px-8 py-3.5 rounded-lg hover:bg-gray-800 transition-colors font-medium">
                 
                         Book a Free Expert Counselling Session
                        
-              </button>
-              <button className="flex items-center text-gray-700 font-medium hover:text-gray-900 transition-colors group">
-                Learn more
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
@@ -58,7 +54,7 @@ const FindCourse = () => {
             <img
               src="/coursebanner.png"
               alt="Course Finding"
-              className="w-full h-[600px] object-cover rounded-2xl shadow-lg"
+              className="w-full object-cover rounded-2xl shadow-lg"
             />
             
             {/* Decorative circles */}
@@ -67,7 +63,7 @@ const FindCourse = () => {
           </div>
         </div>
       </div>
-      <CourseModal isOpen={isModalOpen} onClose={closeModal} />
+      <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
 };

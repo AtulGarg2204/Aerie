@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { createContact ,createCallToAction, createAchiever,createPlan, createYoutube} = require('../controllers/contactControllers');
+const { createContact ,checkEmailExists, getContacts} = require('../controllers/contactControllers');
 
 // POST - Create a new contact submission
 router.post('/', createContact);
-router.post('/calltoaction', createCallToAction);
-router.post('/achievers',createAchiever);
-router.post('/plans',createPlan);
-router.post('/youtube',createYoutube);
+router.post('/calltoaction', createContact);
+router.post('/achievers',createContact);
+router.post('/plans',createContact);
+router.post('/youtube',createContact);
+router.get('/check-email',checkEmailExists);
+router.get('/allContacts',getContacts);
 module.exports = router;

@@ -1,7 +1,6 @@
-const Achievers = require('../models/Achievers');
-const CallToAction = require('../models/CallToAction');
+// controllers/contactController.js
 const Contact = require('../models/Contact');
-const Plans=require('../models/Plans');
+
 // @desc    Create new contact form submission
 // @route   POST /api/contact
 // @access  Public
@@ -17,7 +16,25 @@ exports.createContact = async (req, res) => {
       });
     }
     
-    // Create new contact entry
+    // Check if contact with email already exists
+    const existingContact = await Contact.findOne({ email });
+    
+    // If contact exists, update their information
+    if (existingContact) {
+      existingContact.name = name;
+      existingContact.phone = phone;
+      existingContact.updatedAt = Date.now();
+      
+      await existingContact.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Your information has been updated successfully',
+        isExisting: true
+      });
+    }
+    
+    // Create new contact entry if doesn't exist
     const newContact = new Contact({
       name,
       email,
@@ -29,7 +46,8 @@ exports.createContact = async (req, res) => {
     
     res.status(201).json({
       success: true,
-      message: 'Your information has been submitted successfully'
+      message: 'Your information has been submitted successfully',
+      isExisting: false
     });
   } catch (error) {
     console.error('Contact submission error:', error);
@@ -49,179 +67,58 @@ exports.createContact = async (req, res) => {
     });
   }
 };
-exports.createCallToAction = async (req, res) => {
+
+// @desc    Check if contact with email already exists
+// @route   GET /api/contact/check-email
+// @access  Public
+exports.checkEmailExists = async (req, res) => {
   try {
-    const { name, email, phone } = req.body;
+    const { email } = req.query;
     
-    // Validate input
-    if (!name || !email || !phone) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide name, email, and phone number' 
-      });
-    }
-    
-    // Create new contact entry
-    const newContact = new CallToAction({
-      name,
-      email,
-      phone
-    });
-    
-    // Save to database
-    await newContact.save();
-    
-    res.status(201).json({
-      success: true,
-      message: 'Your information has been submitted successfully'
-    });
-  } catch (error) {
-    console.error('Contact submission error:', error);
-    
-    // Check for validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
+    if (!email) {
       return res.status(400).json({
         success: false,
-        message: messages.join(', ')
+        message: 'Email parameter is required'
       });
     }
     
+    // Check if contact with this email exists
+    const existingContact = await Contact.findOne({ email });
+    
+    res.status(200).json({
+      success: true,
+      exists: !!existingContact
+    });
+    
+  } catch (error) {
+    console.error('Error checking email:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'
     });
   }
 };
-exports.createAchiever = async (req, res) => {
+
+exports.getContacts = async (req, res) => {
+  console.log("Hello");
   try {
-    const { name, email, phone } = req.body;
+    // Get all contacts, sorted by newest first
+    const contacts = await Contact.find()
+      .sort({ createdAt: -1 });
     
-    // Validate input
-    if (!name || !email || !phone) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide name, email, and phone number' 
-      });
-    }
-    
-    // Create new contact entry
-    const newContact = new Achievers({
-      name,
-      email,
-      phone
-    });
-    
-    // Save to database
-    await newContact.save();
-    
-    res.status(201).json({
+    // Return all contacts
+    res.status(200).json({
       success: true,
-      message: 'Your information has been submitted successfully'
+      count: contacts.length,
+      data: contacts
     });
   } catch (error) {
-    console.error('Contact submission error:', error);
-    
-    // Check for validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
-      return res.status(400).json({
-        success: false,
-        message: messages.join(', ')
-      });
-    }
-    
+    console.error('Error fetching contacts:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'
     });
   }
 };
-exports.createPlan = async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
-    
-    // Validate input
-    if (!name || !email || !phone) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide name, email, and phone number' 
-      });
-    }
-    
-    // Create new contact entry
-    const newContact = new Plans({
-      name,
-      email,
-      phone
-    });
-    
-    // Save to database
-    await newContact.save();
-    
-    res.status(201).json({
-      success: true,
-      message: 'Your information has been submitted successfully'
-    });
-  } catch (error) {
-    console.error('Contact submission error:', error);
-    
-    // Check for validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
-      return res.status(400).json({
-        success: false,
-        message: messages.join(', ')
-      });
-    }
-    
-    res.status(500).json({
-      success: false,
-      message: 'Server error'
-    });
-  }
-};
-exports.createYoutube = async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
-    
-    // Validate input
-    if (!name || !email || !phone) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Please provide name, email, and phone number' 
-      });
-    }
-    
-    // Create new contact entry
-    const newContact = new Plans({
-      name,
-      email,
-      phone
-    });
-    
-    // Save to database
-    await newContact.save();
-    
-    res.status(201).json({
-      success: true,
-      message: 'Your information has been submitted successfully'
-    });
-  } catch (error) {
-    console.error('Contact submission error:', error);
-    
-    // Check for validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
-      return res.status(400).json({
-        success: false,
-        message: messages.join(', ')
-      });
-    }
-    
-    res.status(500).json({
-      success: false,
-      message: 'Server error'
-    });
-  }
-};
+
+// Add more controller methods as needed

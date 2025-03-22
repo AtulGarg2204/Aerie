@@ -1,59 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Teachers = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const visibleTeachers = 4; // Number of teachers visible at once
+  const autoScrollInterval = useRef(null);
+  const scrollSpeed = 3000; // Time in milliseconds between slides
   
   // Teacher data with updated image paths
   const teachers = [
     {
       id: 1,
       image: '/1.png',
-
     },
     {
       id: 2,
-
       image: '/2.png',
-
     },
     {
       id: 3,
-
       image: '/3.png',
-
     },
     {
       id: 4,
-
       image: '/4.png',
-
     },
     {
       id: 5,
-
       image: '/5.png',
-
     },
     {
       id: 6,
-
       image: '/6.png',
-
     }
   ];
+
+  // Memoize the startAutoScroll function to prevent re-creation on each render
+  const startAutoScroll = useCallback(() => {
+    // Clear any existing interval
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+    }
+
+    // Set up new interval
+    autoScrollInterval.current = setInterval(() => {
+      if (!isPaused) {
+        // If we've reached the end, loop back to the beginning
+        if (currentIndex >= teachers.length - visibleTeachers) {
+          setCurrentIndex(0);
+        } else {
+          // Otherwise, move to the next slide
+          setCurrentIndex(prevIndex => prevIndex + 1);
+        }
+      }
+    }, scrollSpeed);
+  }, [currentIndex, isPaused, teachers.length, visibleTeachers, scrollSpeed]);
+
+  // Setup auto-scrolling
+  useEffect(() => {
+    // Start the auto-scroll
+    startAutoScroll();
+    
+    // Cleanup on component unmount
+    return () => {
+      if (autoScrollInterval.current) {
+        clearInterval(autoScrollInterval.current);
+      }
+    };
+  }, [startAutoScroll]); // Added startAutoScroll as a dependency
 
   const nextSlide = () => {
     if (currentIndex < teachers.length - visibleTeachers) {
       setCurrentIndex(currentIndex + 1);
+    } else {
+      // Loop back to the beginning when at the end
+      setCurrentIndex(0);
     }
   };
 
   const prevSlide = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else {
+      // Loop to the end when at the beginning
+      setCurrentIndex(teachers.length - visibleTeachers);
     }
+  };
+
+  // Handlers to pause animation on hover/interaction
+  const handleMouseEnter = () => {
+    setIsPaused(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
   };
 
   return (
@@ -64,12 +105,11 @@ const Teachers = () => {
           <p className="text-gray-600">Learn from industry experts with years of experience</p>
         </div>
 
-        <div className="relative">
+        <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {/* Left Navigation Arrow */}
           <button 
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors"
             onClick={prevSlide}
-            disabled={currentIndex === 0}
             aria-label="Previous teachers"
           >
             <ChevronLeft className="w-6 h-6 text-gray-600" />
@@ -78,7 +118,7 @@ const Teachers = () => {
           {/* Teachers Carousel */}
           <div className="overflow-hidden">
             <div 
-              className="flex transition-transform duration-300 ease-in-out"
+              className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * (100 / visibleTeachers)}%)` }}
             >
               {teachers.map((teacher) => (
@@ -92,15 +132,14 @@ const Teachers = () => {
                     <div className="relative aspect-square overflow-hidden">
                       <img 
                         src={teacher.image} 
-                        alt={`${teacher.name}`}
+                        alt={`Teacher ${teacher.id}`}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = `https://ui-avatars.com/api/?name=${teacher.name.replace(' ', '+')}&background=E3E3E3&color=333&size=256`;
+                          e.target.src = `/api/placeholder/400/400`;
                         }}
                       />
                     </div>
-                
                   </div>
                 </div>
               ))}
@@ -109,13 +148,24 @@ const Teachers = () => {
 
           {/* Right Navigation Arrow */}
           <button 
-            className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors ${currentIndex >= teachers.length - visibleTeachers ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors"
             onClick={nextSlide}
-            disabled={currentIndex >= teachers.length - visibleTeachers}
             aria-label="Next teachers"
           >
             <ChevronRight className="w-6 h-6 text-gray-600" />
           </button>
+          
+          {/* Indicator dots */}
+          <div className="flex justify-center mt-6">
+            {Array.from({ length: teachers.length - visibleTeachers + 1 }).map((_, index) => (
+              <button
+                key={index}
+                className={`mx-1 h-2 w-2 rounded-full transition-colors ${currentIndex === index ? 'bg-blue-500' : 'bg-gray-300'}`}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

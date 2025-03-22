@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight ,Phone} from 'lucide-react';
-import AchieversModal from './AchieversModal';
+
+import EnquiryModal from './EnquiryModal';
 const SuccessStories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -238,7 +239,7 @@ const SuccessStories = () => {
       {/* Call to Action Modal */}
       
         </div>
-        <AchieversModal isOpen={isModalOpen} onClose={closeModal} />
+        <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { ArrowRight, GraduationCap, FileText,Phone,FileCheck } from 'lucide-react';
-import PlansModal from './PlansModal';
+
+import EnquiryModal from './EnquiryModal';
 
 const PaymentPlans = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +76,7 @@ const PaymentPlans = () => {
       {/* Call to Action Modal */}
      
         </div>
-        <PlansModal isOpen={isModalOpen} onClose={closeModal} />
+        <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );

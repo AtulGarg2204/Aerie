@@ -8,7 +8,7 @@ dotenv.config();
 
 // Import routes
 const contactRoutes = require('./routes/contactRoutes');
-const userRoutes = require('./routes/userRoutes');
+
 
 // Initialize app
 const app = express();
@@ -24,7 +24,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use('/api/contact', contactRoutes);
-app.use('/api/users', userRoutes);
 
 // Basic route for testing
 app.get('/', (req, res) => {

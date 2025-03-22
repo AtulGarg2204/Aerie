@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Play, ChevronLeft, ChevronRight, ExternalLink,Phone,ArrowRight, Loader } from 'lucide-react';
-import YoutubeModal from './YoutubeModal';
+
+import EnquiryModal from './EnquiryModal';
 
 const YouTube = () => {
   const [videos, setVideos] = useState([]);
@@ -224,7 +225,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         <ArrowRight className="w-5 h-5 ml-1" />
       </button>
         </div>
-        <YoutubeModal isOpen={isModalOpen} onClose={closeModal} />
+        <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );

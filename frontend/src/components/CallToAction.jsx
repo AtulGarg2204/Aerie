@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Calendar, ArrowRight } from 'lucide-react';
-import CallToActionModal from './CallToActionModal'
+
+import EnquiryModal from './EnquiryModal';
 const CallToAction = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,7 +64,7 @@ const CallToAction = () => {
       </button>
 
       {/* Call to Action Modal */}
-      <CallToActionModal isOpen={isModalOpen} onClose={closeModal} />
+      <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </section>
   );
