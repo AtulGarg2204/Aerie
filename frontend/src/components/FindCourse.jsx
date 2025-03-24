@@ -14,7 +14,7 @@ const FindCourse = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 lg:gap-24">
           {/* Left content */}
           <div className="max-w-2xl">
-            <h1 className="text-[3.5rem] leading-[1.1] font-bold text-gray-900 mb-6">
+            <h1 className="text-[3rem] leading-[1.1] font-bold text-gray-900 mb-6">
             Your Success Starts NOW, Enroll Before Seats Fill Up!
 
             </h1>

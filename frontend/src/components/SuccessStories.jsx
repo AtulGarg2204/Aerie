@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
+import {  ChevronLeft, ChevronRight} from 'lucide-react';
 
 import EnquiryModal from './EnquiryModal';
 const SuccessStories = () => {
@@ -16,14 +16,14 @@ const SuccessStories = () => {
   const desktopBanners = [
     {
       id: 1,
-      image: '/images/1.png',
-      alt: 'Student achievements banner'
+      image: '/images/hero_banner.png',
+      alt: 'More student achievements'
     },
     {
       id: 2,
-      image: '/images/hero_banner.png',
-      alt: 'More student achievements'
-    }
+      image: '/images/1.png',
+      alt: 'Student achievements banner'
+    },
   ];
   
   // Mobile banners
@@ -77,31 +77,43 @@ const SuccessStories = () => {
       id: 3,
       name: 'Ishika Jain',
       image: '/images/testimonials/3.png', // Using numbered image from public folder
-      text: "I wanted to express my sincere gratitude for the exceptional support and guidance I've received during my preparation for the GATE exam. The diverse range of knowledgeable teachers for different subjects has been instrumental in enhancing my understanding and boosting my confidence. Your online platform has provided a conducive environment for effective learning, and I am truly grateful for the invaluable resources and insightful sessions. Thank you for playing a crucial role in my preparation journey."
+      text: "I wanted to express my sincere gratitude for the exceptional support and guidance I've received during my preparation for the GATE exam. The diverse range of knowledgeable teachers for different subjects has been instrumental in enhancing my understanding and boosting my confidence.Your online platform has provided a conducive environment for effective learning, and I am truly grateful for the invaluable resources and insightful sessions. Thank you for playing a crucial role in my preparation journey."
     },
     {
       id: 4,
       name: 'Sonal',
       image: '/images/testimonials/4.png', // Using numbered image from public folder
-      text: "Could not have asked more. Great experience here."
+      text: "Hi I'm Sonal Tanpure and I joined Aerie academy for GATE 2025. Thanks to them, I secured AIR 386 rank, with a score of 546.The teachers here explained even the toughest concepts in a way that was easy to understand. Their focus on important topics really helped me prioritize my studies. Their study materials were also excellent. I felt much more confident going into the exam as I followed the preparation strategies they shared, which helped me structure my studies well, revise faster, and even manage my time in the best way possible.Definitely recommend it to anyone serious about cracking the GATE for Architecture."
     },
     {
       id: 5,
       name: 'Sreejita',
       image: '/images/testimonials/5.png', // Using numbered image from public folder
-      text: "Just bought the course. Gone through it. Watched illumination lecture. It was very good, felt I should have enrolled in the classes earlier."
+      text: "I recently attended the revision course by Aerie Architecture, and I'm thrilled to say that it made a significant impact on my preparation. The course helped me gain confidence in the final stretch, clarifying my doubts and reinforcing key concepts. The revision materials were comprehensive and well-structured, making it easier for me to focus on areas that needed improvement. Thank you, Aerie Architecture, for providing a valuable resource that contributed to my success!."
     },
     {
       id: 6,
       name: 'Krish',
       image: '/images/testimonials/6.png', // Using numbered image from public folder
-      text: "There test series, study material is best and facilities are best and cooperative too they start teaching you from basics to advance."
+      text: "It was a great experience for me at Aerie Academy during my preparation for Gate 2025! The best part of the academy was our teachers who not only guided us throughout the year but personally interacted with us from time to time to remove every fear! Whether it was numericals or revision they kept us always motivated and helped us with the strategies to remove them! Revision classes, extra notes,attention to each student and going along with us in our journey were highly knowledgeable things that made us cross the line!"
     },
     {
       id: 7,
       name: 'Krutika Rajput',
       image: '/images/testimonials/7.png', // Using numbered image from public folder
-      text: "Firstly I connected with Parul ma'am, she was very friendly and her guidance was very precise on how to choose a course and the right strategy for exam. The Faculty was very thorough and patient, taught every topic in depth. The team is great, Thank you for the amazing learning experience."
+      text: "Firstly I connected with Parul ma'am, she was very friendly and her guidance was very precise on how to choose a course and the right strategy for exam.The Faculty was very thorough and patient, taught every topic in depth. The team is great, Thank you for the amazing learning experience."
+    },
+    {
+      id: 8,
+      name: 'Pooja Godara',
+      image: '/images/testimonials/8.png', // Using numbered image from public folder
+      text: "There test series, study material is best and facilities are best and cooperative too they start teaching you from basics to advance."
+    },
+    {
+      id: 9,
+      name: 'Sohini',
+      image: '/images/testimonials/9.png', // Using numbered image from public folder
+      text: "It was my second time taking this course and I definitely had a great experience with all the faculties. Starting with concept explanations, understanding, practicing PYQ everything was done precisely. I hope to give the exam with a calm mind. Overall a great experience."
     }
   ];
 
@@ -219,7 +231,7 @@ const SuccessStories = () => {
                         </div>
                         <h4 className="font-medium text-gray-900">{testimonial.name}</h4>
                       </div>
-                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-6 flex-grow">"{testimonial.text}"</p>
+                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-8 flex-grow">"{testimonial.text}"</p>
                     </div>
                   </div>
                 ))}
@@ -261,9 +273,9 @@ const SuccessStories = () => {
             onClick={openModal}
             className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 md:px-8 py-3 md:py-4 rounded-lg font-medium text-base md:text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
           >
-            <Phone className="w-5 h-5" />
+            
             Book a Free Expert Counselling Session
-            <ArrowRight className="w-5 h-5 ml-1" />
+        
           </button>
         </div>
         <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />

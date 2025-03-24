@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Calendar, ArrowRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 import EnquiryModal from './EnquiryModal';
 const CallToAction = () => {
@@ -58,9 +58,9 @@ const CallToAction = () => {
         onClick={openModal}
         className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
       >
-        <Phone className="w-5 h-5" />
+       
         Book a Free Expert Counselling Session
-        <ArrowRight className="w-5 h-5 ml-1" />
+      
       </button>
 
       {/* Call to Action Modal */}

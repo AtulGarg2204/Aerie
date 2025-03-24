@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Play, ChevronLeft, ChevronRight, ExternalLink,Phone,ArrowRight, Loader } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Play, ChevronLeft, ChevronRight, ExternalLink, Loader } from 'lucide-react';
 
 import EnquiryModal from './EnquiryModal';
 
@@ -8,17 +8,25 @@ const YouTube = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const visibleVideos = 3; // Number of videos visible at once
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const autoScrollTimerRef = useRef(null);
+
+  // Number of videos visible at once, depends on screen size
+  const visibleVideos = isMobile ? 1 : 3;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const nextSlide = () => {
-    if (currentIndex < videos.length - visibleVideos) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
+  const nextSlide = useCallback(() => {
+    setCurrentIndex(prevIndex => {
+      if (prevIndex < videos.length - visibleVideos) {
+        return prevIndex + 1;
+      }
+      // Return to the beginning if we're at the end in auto-scroll mode
+      return isMobile ? 0 : prevIndex;
+    });
+  }, [videos.length, visibleVideos, isMobile]);
 
   const prevSlide = () => {
     if (currentIndex > 0) {
@@ -30,6 +38,45 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   const openVideo = (videoId) => {
     window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
   };
+
+  // Setup responsive behavior
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is common breakpoint for mobile
+    };
+    
+    // Check initially
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
+  // Setup auto-scrolling for mobile
+  useEffect(() => {
+    if (isMobile && videos.length > 0) {
+      // Clear existing timer if there is one
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+      }
+      
+      // Set new timer for auto-scrolling (every 3 seconds)
+      autoScrollTimerRef.current = setInterval(nextSlide, 3000); // 3 seconds interval
+    } else if (autoScrollTimerRef.current) {
+      // Clear timer if not mobile
+      clearInterval(autoScrollTimerRef.current);
+    }
+    
+    // Cleanup on component unmount
+    return () => {
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+      }
+    };
+  }, [isMobile, videos.length, currentIndex, nextSlide]); // Re-establish timer when these dependencies change
 
   useEffect(() => {
     const fetchUnlistedYouTubeVideos = async () => {
@@ -131,14 +178,16 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="text-center py-10 text-red-500">{error}</div>
         ) : (
           <div className="relative w-full">
-            {/* Left Navigation Arrow */}
-            <button 
-              className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 transition-colors ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              onClick={prevSlide}
-              disabled={currentIndex === 0}
-            >
-              <ChevronLeft className="w-6 h-6 text-gray-600" />
-            </button>
+            {/* Left Navigation Arrow - Hide on mobile with auto-scroll */}
+            {!isMobile && (
+              <button 
+                className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 transition-colors ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+              >
+                <ChevronLeft className="w-6 h-6 text-gray-600" />
+              </button>
+            )}
 
             {/* Video Carousel */}
             <div className="overflow-hidden">
@@ -157,7 +206,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                         <img 
                           src={video.thumbnail} 
                           alt={video.title}
-                          className="w-full h-64 object-cover" 
+                          className="w-full h-48 md:h-64 object-cover" 
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = 'https://via.placeholder.com/320x180?text=Video+Thumbnail';
@@ -203,27 +252,44 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               </div>
             </div>
 
-            {/* Right Navigation Arrow */}
-            <button 
-              className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 transition-colors ${currentIndex >= videos.length - visibleVideos ? 'opacity-50 cursor-not-allowed' : ''}`}
-              onClick={nextSlide}
-              disabled={currentIndex >= videos.length - visibleVideos}
-            >
-              <ChevronRight className="w-6 h-6 text-gray-600" />
-            </button>
+            {/* Mobile Pagination Indicator */}
+            {isMobile && videos.length > 1 && (
+              <div className="flex justify-center mt-4 gap-2">
+                {videos.map((_, index) => (
+                  <div 
+                    key={index}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentIndex === index ? 'w-4 bg-indigo-600' : 'w-2 bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Right Navigation Arrow - Hide on mobile with auto-scroll */}
+            {!isMobile && (
+              <button 
+                className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 transition-colors ${currentIndex >= videos.length - visibleVideos ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={nextSlide}
+                disabled={currentIndex >= videos.length - visibleVideos}
+              >
+                <ChevronRight className="w-6 h-6 text-gray-600" />
+              </button>
+            )}
           </div>
         )}
         
-        {/* Added CTA Button */}
+        {/* CTA Button */}
         <div className="flex justify-center mt-12">
-        <button
-        onClick={openModal}
-        className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
-      >
-        <Phone className="w-5 h-5" />
-        Book a Free Expert Counselling Session
-        <ArrowRight className="w-5 h-5 ml-1" />
-      </button>
+          <button
+            onClick={openModal}
+            className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 sm:px-8 py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
+          >
+          
+            <span className="sm:inline hidden">Book a Free Expert Counselling Session</span>
+            <span className="sm:hidden inline">Book a Free Expert Counselling Session</span>
+        
+          </button>
         </div>
         <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>

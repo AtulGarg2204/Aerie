@@ -11,10 +11,11 @@ const HeroBanner = () => {
   
   // Desktop banners
   const desktopBanners = [
-    '/images/hero-bg.png',
+    
     '/images/hero_banner.png',
+    '/images/1.png',
     '/images/6.png',    // This is the banner that needs the clickable button
-    '/images/1.png'
+    '/images/hero-bg.png'
   ];
   
   // Mobile banners
@@ -159,7 +160,7 @@ const HeroBanner = () => {
       <div className="relative">
         <div className="container mx-auto">
           {/* Background image slider with animation */}
-          <div className="w-full overflow-hidden relative h-[213px] md:h-[648px]">
+          <div className="w-full overflow-hidden relative h-[668px] md:h-[648px]">
             {banners.map((banner, index) => (
               <div 
                 key={index} 
