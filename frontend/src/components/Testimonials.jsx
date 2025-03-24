@@ -48,7 +48,7 @@ const Testimonials = () => {
     {
       id: 8,
       name: 'Krutika Rajput',
-      image: '/images/testimonials/user8.jpg', // Replace with actual image path
+      image: '/1.jpg', // Replace with actual image path
       text: "Firstly I connected with Parul ma'am, she was very friendly and her guidance was very precise on how to choose a course and the right strategy for exam. The Faculty was very thorough and patient, taught every topic in depth. The team is great, Thank you for the amazing learning experience."
     }
   ];

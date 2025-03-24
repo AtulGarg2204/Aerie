@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight ,Phone} from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
 
 import EnquiryModal from './EnquiryModal';
 const SuccessStories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  
   // Banner state and data
   const [currentBanner, setCurrentBanner] = useState(0);
-  const banners = [
+  
+  // Desktop banners
+  const desktopBanners = [
     {
       id: 1,
       image: '/images/1.png',
@@ -17,65 +21,92 @@ const SuccessStories = () => {
     },
     {
       id: 2,
-      image: '/images/2.png',
+      image: '/images/hero_banner.png',
       alt: 'More student achievements'
     }
   ];
+  
+  // Mobile banners
+  const mobileBanners = [
+    {
+      id: 1,
+      image: '/images/Phone_Banners/1.png',
+      alt: 'Student achievements banner (mobile)'
+    },
+    {
+      id: 2,
+      image: '/images/Phone_Banners/2.png',
+      alt: 'More student achievements (mobile)'
+    }
+  ];
+  
+  // Use appropriate banners based on screen size
+  const banners = isMobile ? mobileBanners : desktopBanners;
+
+  // Check screen size on mount and when window resizes
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is a common breakpoint for tablets
+    };
+    
+    // Initial check
+    checkScreenSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Testimonials data
   const testimonials = [
     {
       id: 1,
       name: 'Ruchika Ramteke',
-      image: '/images/testimonials/user1.jpg',
+      image: '/images/testimonials/1.png', // Using numbered image from public folder
       text: "Enrolling at Aerie Academy for my 'GATE 2024 Architecture and Planning exam' was a game-changer. Their organized and easy-to-understand study sessions, helpful teachers, and personalized guidance really helped me a lot. I want to thank Aerie Academy for all their support and assistance. Without them, achieving AIR 188 wouldn't have been possible."
     },
     {
       id: 2,
       name: 'Swati',
-      image: '/images/testimonials/user2.jpg',
+      image: '/images/testimonials/2.png', // Using numbered image from public folder
       text: "The journey with Aerie Architecture has been great. The recorded video lectures are as effective as the learning live classes as each and every detail is covered in the classes. The revision classes before the exam is a plus point. It covers all the important concepts in a short span of time. All in all the classes helped me a lot to bring discipline to my preparation for GATE 2024 and I thank all the faculty that helped me get closer to goal."
     },
     {
       id: 3,
       name: 'Ishika Jain',
-      image: '/images/testimonials/user3.jpg',
+      image: '/images/testimonials/3.png', // Using numbered image from public folder
       text: "I wanted to express my sincere gratitude for the exceptional support and guidance I've received during my preparation for the GATE exam. The diverse range of knowledgeable teachers for different subjects has been instrumental in enhancing my understanding and boosting my confidence. Your online platform has provided a conducive environment for effective learning, and I am truly grateful for the invaluable resources and insightful sessions. Thank you for playing a crucial role in my preparation journey."
     },
     {
       id: 4,
-      name: 'Bharat Lathwal',
-      image: '/images/testimonials/user4.jpg',
+      name: 'Sonal',
+      image: '/images/testimonials/4.png', // Using numbered image from public folder
       text: "Could not have asked more. Great experience here."
     },
     {
       id: 5,
-      name: 'Rupesh Soni',
-      image: '/images/testimonials/user5.jpg',
+      name: 'Sreejita',
+      image: '/images/testimonials/5.png', // Using numbered image from public folder
       text: "Just bought the course. Gone through it. Watched illumination lecture. It was very good, felt I should have enrolled in the classes earlier."
     },
     {
       id: 6,
-      name: 'Pooja Godara',
-      image: '/images/testimonials/user6.jpg',
+      name: 'Krish',
+      image: '/images/testimonials/6.png', // Using numbered image from public folder
       text: "There test series, study material is best and facilities are best and cooperative too they start teaching you from basics to advance."
     },
     {
       id: 7,
-      name: 'Prajwal Muniraj',
-      image: '/images/testimonials/user7.jpg',
-      text: "IT WAS GOOD, HAD GOOD MENTORS IN ALL THE SUBJECTS, I WAS HAPPY TO SEE THAT, IN ALL THE SUBJECTS THE CONCEPT CLARIFICATIONS WERE TOO GOOD."
-    },
-    {
-      id: 8,
       name: 'Krutika Rajput',
-      image: '/images/testimonials/user8.jpg',
+      image: '/images/testimonials/7.png', // Using numbered image from public folder
       text: "Firstly I connected with Parul ma'am, she was very friendly and her guidance was very precise on how to choose a course and the right strategy for exam. The Faculty was very thorough and patient, taught every topic in depth. The team is great, Thank you for the amazing learning experience."
     }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonialsPerView = 3;
+  const testimonialsPerView = isMobile ? 1 : 3; // Show fewer testimonials on mobile
   const totalPages = Math.ceil(testimonials.length / testimonialsPerView);
 
   // Auto-rotate banners every 3 seconds
@@ -112,7 +143,7 @@ const SuccessStories = () => {
         </div>
 
         {/* Banner Container with Auto-Rotation */}
-        <div className="relative rounded-xl overflow-hidden mb-12 h-[530px]">
+        <div className="relative rounded-xl overflow-hidden mb-12 h-[590px] md:h-[530px]">
           {banners.map((banner, index) => (
             <div 
               key={banner.id}
@@ -146,10 +177,9 @@ const SuccessStories = () => {
         </div>
 
         {/* Testimonials Section */}
-        <div className="mb-12 mt-28">
-        <div className="flex justify-center items-center mb-10">
-    <h2 className="text-3xl font-bold text-gray-900 px-4">Hear from our Students</h2>
-           
+        <div className="mb-12 mt-16 md:mt-28">
+          <div className="flex justify-center items-center mb-10">
+            <h2 className="text-3xl font-bold text-gray-900 px-4">Hear from our Students</h2>
           </div>
 
           <div className="relative">
@@ -227,17 +257,14 @@ const SuccessStories = () => {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-8">
-        <button
-        onClick={openModal}
-        className="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
-      >
-        <Phone className="w-5 h-5" />
-        Book a Free Expert Counselling Session
-        <ArrowRight className="w-5 h-5 ml-1" />
-      </button>
-
-      {/* Call to Action Modal */}
-      
+          <button
+            onClick={openModal}
+            className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 md:px-8 py-3 md:py-4 rounded-lg font-medium text-base md:text-lg inline-flex items-center gap-2 transition-colors shadow-lg"
+          >
+            <Phone className="w-5 h-5" />
+            Book a Free Expert Counselling Session
+            <ArrowRight className="w-5 h-5 ml-1" />
+          </button>
         </div>
         <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>

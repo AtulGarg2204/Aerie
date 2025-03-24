@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { BookOpen, Sparkles, GraduationCap, Clock } from 'lucide-react';
 import EnquiryModal from './EnquiryModal'; // Import the EnquiryModal component
@@ -7,14 +6,43 @@ const HeroBanner = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
   const [animatedIcons, setAnimatedIcons] = useState([false, false, false, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const featuresRef = useRef(null);
   
-  const banners = [
+  // Desktop banners
+  const desktopBanners = [
     '/images/hero-bg.png',
-    '/images/2.png',
+    '/images/hero_banner.png',
     '/images/6.png',    // This is the banner that needs the clickable button
     '/images/1.png'
   ];
+  
+  // Mobile banners
+  const mobileBanners = [
+    '/images/Phone_Banners/1.png',
+    '/images/Phone_Banners/2.png',
+    '/images/Phone_Banners/3.png',
+    '/images/Phone_Banners/5.png'
+  ];
+
+  // Get current banners based on screen size
+  const banners = isMobile ? mobileBanners : desktopBanners;
+  
+  // Check screen size on mount and when window resizes
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is a common breakpoint for tablets
+    };
+    
+    // Initial check
+    checkScreenSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   // Memoize features to avoid dependency issues
   const features = useMemo(() => [
@@ -142,7 +170,7 @@ const HeroBanner = () => {
                 <img 
                   src={banner} 
                   alt={`GATE 2026 Architecture & Planning Banner ${index + 1}`} 
-                  className={`absolute top-0 left-0 w-full object-cover object-top md:object-center transition-opacity duration-1000 ${
+                  className={`absolute top-0 left-0 w-full h-full object-cover object-top md:object-center transition-opacity duration-1000 ${
                     currentBanner === index ? 'opacity-100' : 'opacity-0'
                   }`}
                   style={{
