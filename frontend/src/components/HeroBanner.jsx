@@ -11,7 +11,6 @@ const HeroBanner = () => {
   
   // Desktop banners
   const desktopBanners = [
-    
     '/images/hero_banner.png',
     '/images/1.png',
     '/images/6.png',    // This is the banner that needs the clickable button
@@ -73,11 +72,11 @@ const HeroBanner = () => {
     }
   ], []);
   
-  // Banner rotation effect
+  // Banner rotation effect with horizontal sliding animation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 5000); // Change banner every 5 seconds
     
     return () => clearInterval(interval);
   }, [banners.length]);
@@ -159,34 +158,31 @@ const HeroBanner = () => {
       {/* Main banner with automatic slider */}
       <div className="relative">
         <div className="container mx-auto">
-          {/* Background image slider with animation */}
+          {/* Background image slider with horizontal sliding animation */}
           <div className="w-full overflow-hidden relative h-[668px] md:h-[648px]">
-            {banners.map((banner, index) => (
-              <div 
-                key={index} 
-                className="absolute inset-0 cursor-pointer" 
-                onClick={openModal}
-                aria-label="Click to enquire now"
-              >
-                <img 
-                  src={banner} 
-                  alt={`GATE 2026 Architecture & Planning Banner ${index + 1}`} 
-                  className={`absolute top-0 left-0 w-full h-full object-cover object-top md:object-center transition-opacity duration-1000 ${
-                    currentBanner === index ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{
-                    transform: `translateX(${(index - currentBanner) * 100}%)`,
-                    transition: 'transform 0.5s ease-in-out'
-                  }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = `https://via.placeholder.com/1200x500?text=Aerie+Academy+Banner+${index + 1}`;
-                  }}
-                />
-                
-                {/* No overlay or button, entire image is clickable */}
-              </div>
-            ))}
+            <div 
+              className="absolute inset-0 flex transition-transform duration-[3000ms] ease-in-out"
+              style={{ transform: `translateX(-${currentBanner * 100}%)` }}
+            >
+              {banners.map((banner, index) => (
+                <div 
+                  key={index} 
+                  className="min-w-full h-full flex-shrink-0 cursor-pointer" 
+                  onClick={openModal}
+                  aria-label="Click to enquire now"
+                >
+                  <img 
+                    src={banner} 
+                    alt={`GATE 2026 Architecture & Planning Banner ${index + 1}`} 
+                    className="w-full h-full object-cover object-top md:object-center"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://via.placeholder.com/1200x500?text=Aerie+Academy+Banner+${index + 1}`;
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         
@@ -222,6 +218,20 @@ const HeroBanner = () => {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Indicator dots for the banner */}
+      <div className="flex justify-center mt-4">
+        {banners.map((_, index) => (
+          <button 
+            key={index}
+            className={`w-2 h-2 mx-1 rounded-full transition-all duration-500 ${
+              currentBanner === index ? 'bg-indigo-600 w-4' : 'bg-gray-300'
+            }`}
+            onClick={() => setCurrentBanner(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
       
       {/* Enquiry Modal */}

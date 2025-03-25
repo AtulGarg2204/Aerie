@@ -11,7 +11,7 @@ const EnquiryModal = ({ isOpen, onClose }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [validationMsg, setValidationMsg] = useState({});
   const [isExistingUser, setIsExistingUser] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(false); // Changed to false by default
 
   // Check if user has already submitted details before showing modal content
   useEffect(() => {
@@ -36,10 +36,8 @@ const EnquiryModal = ({ isOpen, onClose }) => {
           }
         }
         
-        // Add a slight delay to make the transition smoother
-        setTimeout(() => {
-          setInitialLoading(false);
-        }, 800); // 800ms delay for smoother appearance
+        // Remove the artificial delay
+        setInitialLoading(false);
       };
       
       checkExistingUser();
@@ -122,17 +120,14 @@ const EnquiryModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  // Show loading spinner while checking user status
+  // Show a simpler loading indicator with reduced height
   if (initialLoading) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center p-4" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div className="relative bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-md mx-auto">
-          <div className="px-4 py-5 sm:p-6 flex flex-col items-center justify-center" style={{ height: '300px' }}>
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-3"></div>
-            <div className="animate-pulse">
-              <div className="h-2 bg-slate-200 rounded w-32 mb-2.5"></div>
-              <div className="h-2 bg-slate-200 rounded w-24"></div>
-            </div>
+          <div className="px-4 py-5 sm:p-6 flex flex-col items-center justify-center" style={{ height: '200px' }}>
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+            <p className="mt-2 text-sm text-gray-500">Loading...</p>
           </div>
         </div>
       </div>
